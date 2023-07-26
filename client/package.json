@@ -36,5 +36,9 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000/api/"
+  "proxy": "http://localhost:5000/api/",
+  "devDependencies": {
+    "@iconify/react": "^4.1.1",
+    "tailwindcss": "^3.3.3"
+  }
 }
