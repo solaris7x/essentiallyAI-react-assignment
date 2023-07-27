@@ -9,7 +9,7 @@ const HomeForm = (props) => {
         e.target[0].value = e.target[0].value?.toUpperCase();
         const [stock, date] = [e.target[0].value, e.target[1].value];
 
-        console.log(stock, date);
+        // console.log(stock, date);
         props.setstockInfo({ stock, date });
       }}
     >

@@ -71,8 +71,10 @@ app.post("/api/fetchStockData", async (req, res) => {
     console.log(ticker, date);
 
     // My API key
-    const apiKey = "zCTXIKq32nAGxSoCglU5JKAI2di9zHwW";
-    // apiKey: "6lM5vxLdnwzDhWSbp3QCVDMOgwI42IoY",
+    const apiKey = process.env.POLYGON_APIKEY;
+    if (!apiKey) {
+      return res.status(500).send("API Key not configured on backend");
+    }
 
     // API call
     const url =
@@ -85,19 +87,40 @@ app.post("/api/fetchStockData", async (req, res) => {
     // const url = 'https://api.polygon.io/v1/open-close/AAPL/2023-07-25?apiKey=xxx'
 
     try {
-      const response = await axios.get(url);
+      const tickerDayResponse = await axios.get(url);
 
       // Check if the response is valid
-      const data = response.data;
-      console.log(data);
+      const tickerDayData = tickerDayResponse.data;
+      console.log(tickerDayData);
+
+      // Get ticker details
+      const tickerDetailsResponse = await axios.get(
+        `https://api.polygon.io/v3/reference/tickers/${ticker}?date=${date}&apiKey=${apiKey}`
+      );
+
+      const tickerDetails = tickerDetailsResponse.data.results;
+      // console.log(tickerDetails.name);
+
+      let logoData = null;
+      // Get Logo SVG data
+      if (tickerDetails?.branding?.logo_url) {
+        const logoUrl = tickerDetails.branding.logo_url + `?apiKey=${apiKey}`;
+
+        const logoResponse = await axios.get(
+          tickerDetails.branding.logo_url + `?apiKey=${apiKey}`
+        );
+        logoData = logoResponse.data;
+      }
 
       //   res.sendStatus(200);
       return res.send({
-        open: data.open,
-        close: data.close,
-        high: data.high,
-        low: data.low,
-        volume: data.volume,
+        name: tickerDetails.name,
+        logoData,
+        open: tickerDayData.open,
+        close: tickerDayData.close,
+        high: tickerDayData.high,
+        low: tickerDayData.low,
+        volume: tickerDayData.volume,
       });
     } catch (err) {
       console.log(err.response.status, err.response.data);

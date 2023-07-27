@@ -8,7 +8,7 @@ import TickerResults from "./components/TickerResults";
 
 const App = () => {
   // Dark mode setup
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
   const toggleDarkMode = () => {
     setDarkMode((prev) => !prev);
@@ -30,13 +30,8 @@ const App = () => {
               icon: "ant-design:home-outlined",
             },
             {
-              name: "Features",
-              href: "/#features",
-              icon: "bi:gear-fill",
-            },
-            {
-              name: "Tools",
-              href: "/#tools",
+              name: "Repo",
+              href: "https://github.com/solaris7x/essentiallyAI-react-assignment.git",
               icon: "carbon:tools",
             },
           ]}
@@ -52,6 +47,21 @@ const App = () => {
         <div className="mt-10"></div>
         {/* Ticker Details */}
         {stockInfo && <TickerResults stockInfo={stockInfo} />}
+
+        <div className="py-10"></div>
+
+        {/* Footer */}
+        <footer className="flex flex-col items-center justify-center w-full h-24 border-t dark:border-gray-700">
+          Created by
+          <a
+            className="text-emerald-500 hover:text-emerald-800"
+            href="https://github.com/solaris7x"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Solaris7x
+          </a>
+        </footer>
       </div>
     </div>
   );

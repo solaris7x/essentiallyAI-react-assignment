@@ -28,3 +28,8 @@ code {
   background-color: #ecb511;
   outline: 1px solid #a98723;
 }
+
+.logoClass svg {
+  width: 100%;
+  aspect-ratio: 4/3;
+}
