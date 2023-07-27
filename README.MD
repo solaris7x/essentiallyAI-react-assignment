@@ -1,31 +1,52 @@
-# Frontend Task Essentially AI
+# Frontend Task Essentially AI (completed)
 
-## Steps to complete the task
-1. Create a clone of this repo
-2. Complete the tasks given below
-3. Create your own public repo on github and push your code there
-4. Share the repo link as a reply to the mail
+## Steps to run this repo
+
+### Server
+
+- Rename the `sample.env` file to `.env` and place your Polygon API key inside
+- Install deps and start the server with `yarn start`
+
+### Client
+
+- The API Url is hardcoded to `http://localhost:5000`, thus this assume you run the client in `http` environment
+- Install deps and start the client with `yarn start`
 
 ## Overview
+
 The task is to build a webpage to display the trade statistics (Open, High, Low, Close, Volume) of a particular stock for a particular day. You should use Polygon free tier API for this task (https://polygon.io/)
 
 ## Individual tasks
-1. The given codebase has two parts, client and server.
-2. Go to server folder, you'll see in app.js that a POST route is exposed at /api/fetchStockData. Implement this API to fetch the trade statistics of a particular stock for a particular day using the Polygon API.
-3. Return only the required fields in the response in a json format. Handle various edge cases here along with relevant response codes.
-4. Go to client folder and run the react app. You'll see just a hello world screen for now.
-5. Create a form for the user to input the symbol of the stock and select a date and add a submit button.
-6. On submitting the form, send a request to the api route which is exposed and once the data is back, display the required details in the frontend (Open, High, Low, Close, Volume).
 
-## Evaluation criteria
-1. The logical correctness of all individual tasks mentioned above
-2. Tackling of edge cases
-3. Efficiency of the code
-4. Naming conventions (No need to follow any standard pattern, just describe the pattern and make sure the code is consistent with it)
-5. Project structure (Again, no need to follow a standard pattern. Just make sure the structuring is logical and describe it)
-6. Documentation (This can just be a readme file with bullet points, as long as it explains what you've implemented, you're good to go).
-7. Bonus points for interesting UI (This obviously won't be considered if the core functionality isn't present).
+### Server
+
+- Implement an API route `/api/fetchStockData` in the app.js file to handle POST requests.
+- Parse the incoming request to get the stock symbol and date input from the client.
+- Validate the input parameters to ensure they present.
+  - Date should be in YYYY-MM-DD format
+  - Date is valid and not in future
+  - Ticker should only contain alphabets
+- Make a request to the Polygon API using the axios library, passing the stock symbol (uppercase) and date as query parameters.
+- Handle the response from the Polygon API, extracting the required fields (Open, High, Low, Close, Volume) from the data.
+- If the `response status` is not `200` then relay proper status to request
+- Format the data into a JSON response and get additional ticker details with logo then send it back.
+- Implement error handling to catch any issues during the API call or data processing, returning `500` for unexpected error responses.
+
+### Client
+
+- The app consist of three components `Navbar` , `HomeForm` , `TickerResults`
+  - `Navbar` is for UI aesthetics
+  - `HomeForm` is the user input form with HTML basic validation (no js dependencies)
+  - `TickerResults` is component to show fetched Response after the form is submitted
+- The `HomeForm` is responsible for updating the `stockInfo` state (managed in App.js) on submit of user form.
+- Once the `stockInfo` state is set , `TickerResults` component will render sending the fetch request to backend API on initialization and set the interal state to loading
+- The response can resolve in either `data` or `error` , which updates the state respectively.
+- With conditional rendering the app has priority as loading > error > data , if not loading and no error then will try to render data.
+- On new form submit , the useEffect hook will retrigger sending the fetch request, reset error and loading to true till response resolves
 
 ## Optional tasks
+
 1. Imagine this is a real world scenario which thousands of users use to get the historic data of a stock for a particular day, how would this product change in order to improve the UX.
+   - Implement a caching mechanism to store previously requested stock data, reducing API calls and improving response times.
 2. What new features would you add in this product to increase it's utility for the end user.
+   - Enhanced Data Visualization and Analysis. Provide interactive and visually appealing charts to help users analyze stock performance more effectively.

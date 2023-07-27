@@ -19,6 +19,7 @@ const TickerResults = (props) => {
 
     async function fetchStockData() {
       try {
+        // Can implement caching to localStorage here to prevent unnecessary API calls
         const response = await fetch(
           "http://localhost:5000/api/fetchStockData",
           {
